@@ -8,8 +8,11 @@ from includes.utils import plot_learning_curve,plot_wait_times
 
 def get_neighbors(semaphore):
     neighbors = {
-        "gneJ26": ["gneJ27"],  
-        "gneJ27": ["gneJ26"]   
+        "gneJ26": ["gneJ27","gneJ28","gneJ29","gneJ30"],  
+        "gneJ27": ["gneJ26"],   
+        "gneJ28": ["gneJ26"],   
+        "gneJ29": ["gneJ26"],   
+        "gneJ30": ["gneJ26"],   
     }
     return neighbors.get(semaphore, [])
 
@@ -19,9 +22,9 @@ if __name__ == '__main__':
         
     step = 0
     delayTime = 0 #1/8
-    semaphores = ["gneJ26", "gneJ27"]
+    semaphores = ["gneJ26", "gneJ27","gneJ28","gneJ29","gneJ30"]
     # Central = "gneJ26"
-    n_games = 5000
+    n_games = 100
     n_steps = 0
     agents = {} 
     # scores = []
@@ -58,11 +61,14 @@ if __name__ == '__main__':
         total_queue_length = 0  # Total queue length
         total_episode_reward = 0 # rewards sum for each epsiode
         for sem, agent in agents.items():
+            neighbors = {}
             # Get neighbor queues
             neighbor_queues = [agents[neighbor].get_queue_length() for neighbor in get_neighbors(sem)]
             # Update with new neigh info
             agent.update_with_neighbor_info(neighbor_queues)
-
+            for neighbor in get_neighbors(sem):
+                queue = agents[neighbor].get_queue_length()
+                neighbors[neighbor] = queue 
             score = 0
             action = agent.choose_action(observations[sem])
             observation_, reward, info = agent.step(action, step)
@@ -86,10 +92,9 @@ if __name__ == '__main__':
 
             ## DEBUG
             # agent.printStatusReport(step)
-            print(f'Agent {sem} | Episode: {i}, Score: {score}, Avg Score: {avg_score:.1f}, Best Score: {best_score:.2f}, Epsilon: {agent.epsilon:.2f}, Steps: {n_steps}')
-            # print('episode: ', i,'score: ', score,
-            #      ' average score %.1f' % avg_score, 'best score %.2f' % best_score,
-            #     'epsilon %.2f' % agent.epsilon, 'steps', n_steps)
+            agent.print_neighbor_info(neighbors)
+            # print(f"Agent {sem} received queue lengths from neighbors: {neighbors}")
+            
 
             if avg_score > best_score:
                 if not load_checkpoint:
@@ -98,15 +103,18 @@ if __name__ == '__main__':
             
             scores[sem].append(score)
             steps_array.append(n_steps)
-
         
-        avg_wait_time = total_wait_time / len(semaphores)
+        #FIX
+        avg_wait_time = total_wait_time / len(semaphores) if len(semaphores) > 0 else 0
         avg_queue_length = total_queue_length / len(semaphores) 
-        print(f"Episode {i} | Avg Wait Time: {avg_wait_time:.2f}, Avg Queue Length: {avg_queue_length:.2f}, Total Reward: {total_episode_reward:.2f}, Epsilon: {agent.epsilon:.2f}")  
+        # print(f"Episode {i} | Semaphore Wait Times: {[(sem, info['avg_wait_time']) for sem in semaphores]}")
+        # print(f"Episode {i} | Avg Wait Time: {avg_wait_time:.2f}, Avg Queue Length: {avg_queue_length:.2f}, Total Reward: {total_episode_reward:.2f}, Epsilon: {agent.epsilon:.2f}")  
+
         avg_wait_times_history.append(avg_wait_time)
         avg_rewards_history.append(total_episode_reward)
         eps_history.append(np.mean([agent.epsilon for agent in agents.values()]))
         total_rewards.append(total_score)
+
         env.simulationStep()
         time.sleep(delayTime)
             # step+=1

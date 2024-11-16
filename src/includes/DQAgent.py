@@ -260,7 +260,9 @@ class DQAgent(object):
         return sum([self.no_veh_N, self.no_veh_E, self.no_veh_W, self.no_veh_S])
     def update_with_neighbor_info(self, neighbor_queues):
         self.neighbor_queues = neighbor_queues
-    
+    def print_neighbor_info(self, neighbor_queues):
+        print(f"Agent {self.TLC_name} updating with neighbor queues: {neighbor_queues}")
+
     def printStatusReport(self, step):
         # Print status report
         phase_central = traci.trafficlight.getRedYellowGreenState(self.TLC_name)

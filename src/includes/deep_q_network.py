@@ -19,7 +19,8 @@ class DeepQNetwork(nn.Module):
 
         self.loss = nn.MSELoss()
 
-        self.device = T.device('cuda:0' if T.cuda.is_available() else 'cpu')
+        # self.device = T.device('cuda:0' if T.cuda.is_available() else 'cpu')
+        self.device = T.device('cpu')
 
         self.to(self.device)
 
