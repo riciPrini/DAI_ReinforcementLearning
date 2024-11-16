@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- generated on 2024-11-15 10:02:03 by Eclipse SUMO netedit Version 1.21.0
+<!-- generated on 2024-11-16 09:19:53 by Eclipse SUMO netedit Version 1.21.0
 <neteditConfiguration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/neteditConfiguration.xsd">
 
     <input>
-        <sumo-net-file value="includes/sumo/network.net.xml"/>
+        <sumo-net-file value="src/includes/sumo/network.net.xml"/>
     </input>
 
     <output>
-        <output-file value="includes/sumo/network.net.xml"/>
+        <output-file value="src/includes/sumo/network.net.xml"/>
     </output>
 
     <processing>
@@ -312,24 +312,6 @@
         <lane id="eI_H_1" index="1" speed="13.89" length="79.20" shape="1389.60,598.40 1310.40,598.40"/>
     </edge>
 
-    <tlLogic id="B" type="static" programID="0" offset="0">
-        <phase duration="42" state="rrGGGGGg"/>
-        <phase duration="3"  state="rryyyyyy"/>
-        <phase duration="42" state="GGGrrrrr"/>
-        <phase duration="3"  state="yyyrrrrr"/>
-    </tlLogic>
-    <tlLogic id="D" type="static" programID="0" offset="0">
-        <phase duration="42" state="GGGGGgrr"/>
-        <phase duration="3"  state="yyyyyyrr"/>
-        <phase duration="42" state="GrrrrrGG"/>
-        <phase duration="3"  state="yrrrrryy"/>
-    </tlLogic>
-    <tlLogic id="F" type="static" programID="0" offset="0">
-        <phase duration="42" state="GGgrrGGG"/>
-        <phase duration="3"  state="yyyrryyy"/>
-        <phase duration="42" state="rrrGGGrr"/>
-        <phase duration="3"  state="rrryyyrr"/>
-    </tlLogic>
     <tlLogic id="gneJ26" type="static" programID="0" offset="0">
         <phase duration="42" state="GGGgrrrrGGGgrrrr"/>
         <phase duration="3"  state="yyyyrrrryyyyrrrr"/>
@@ -343,6 +325,24 @@
         <phase duration="3"  state="rrrryyyyrrrryyyy"/>
     </tlLogic>
     <tlLogic id="gneJ27" type="static" programID="0" offset="0">
+        <phase duration="42" state="GGgrrGGG"/>
+        <phase duration="3"  state="yyyrryyy"/>
+        <phase duration="42" state="rrrGGGrr"/>
+        <phase duration="3"  state="rrryyyrr"/>
+    </tlLogic>
+    <tlLogic id="gneJ28" type="static" programID="0" offset="0">
+        <phase duration="42" state="GGGGGgrr"/>
+        <phase duration="3"  state="yyyyyyrr"/>
+        <phase duration="42" state="GrrrrrGG"/>
+        <phase duration="3"  state="yrrrrryy"/>
+    </tlLogic>
+    <tlLogic id="gneJ29" type="static" programID="0" offset="0">
+        <phase duration="42" state="rrGGGGGg"/>
+        <phase duration="3"  state="rryyyyyy"/>
+        <phase duration="42" state="GGGrrrrr"/>
+        <phase duration="3"  state="yyyrrrrr"/>
+    </tlLogic>
+    <tlLogic id="gneJ30" type="static" programID="0" offset="0">
         <phase duration="42" state="GGgrrGGG"/>
         <phase duration="3"  state="yyyrryyy"/>
         <phase duration="42" state="rrrGGGrr"/>
@@ -441,9 +441,9 @@
     <junction id=":I_18_0" type="internal" x="1400.89" y="605.44" incLanes=":I_11_0 eF_I_0 eF_I_1" intLanes=":I_0_0 :I_1_0 :I_1_1 :I_5_0 :I_5_1 :I_7_0 :I_13_0 :I_13_1 :I_15_0"/>
     <junction id=":I_19_0" type="internal" x="1394.56" y="600.89" incLanes=":I_15_0 eD_I_0 eD_I_1" intLanes=":I_1_0 :I_1_1 :I_3_0 :I_4_0 :I_5_0 :I_5_1 :I_9_0 :I_9_1 :I_11_0"/>
 
-    <connection from="eA_B" to="eB_C" fromLane="0" toLane="0" via=":B_5_0" tl="B" linkIndex="5" dir="s" state="O"/>
-    <connection from="eA_B" to="eB_C" fromLane="1" toLane="1" via=":B_5_1" tl="B" linkIndex="6" dir="s" state="O"/>
-    <connection from="eA_B" to="eB_I" fromLane="1" toLane="1" via=":B_7_0" tl="B" linkIndex="7" dir="r" state="o"/>
+    <connection from="eA_B" to="eB_C" fromLane="0" toLane="0" via=":B_5_0" tl="gneJ29" linkIndex="5" dir="s" state="O"/>
+    <connection from="eA_B" to="eB_C" fromLane="1" toLane="1" via=":B_5_1" tl="gneJ29" linkIndex="6" dir="s" state="O"/>
+    <connection from="eA_B" to="eB_I" fromLane="1" toLane="1" via=":B_7_0" tl="gneJ29" linkIndex="7" dir="r" state="o"/>
     <connection from="eA_H" to="eH_I" fromLane="0" toLane="0" via=":H_5_0" tl="gneJ27" linkIndex="5" dir="l" state="O"/>
     <connection from="eA_H" to="eH_G" fromLane="0" toLane="0" via=":H_6_0" tl="gneJ27" linkIndex="6" dir="s" state="O"/>
     <connection from="eA_H" to="eH_G" fromLane="1" toLane="1" via=":H_6_1" tl="gneJ27" linkIndex="7" dir="s" state="O"/>
@@ -455,12 +455,12 @@
     <connection from="eB_I" to="eI_F" fromLane="0" toLane="0" via=":I_9_0" tl="gneJ26" linkIndex="9" dir="s" state="O"/>
     <connection from="eB_I" to="eI_F" fromLane="1" toLane="1" via=":I_9_1" tl="gneJ26" linkIndex="10" dir="s" state="O"/>
     <connection from="eB_I" to="eI_H" fromLane="1" toLane="1" via=":I_11_0" tl="gneJ26" linkIndex="11" dir="r" state="o"/>
-    <connection from="eC_B" to="eB_I" fromLane="0" toLane="0" via=":B_2_0" tl="B" linkIndex="2" dir="l" state="O"/>
-    <connection from="eC_B" to="eB_A" fromLane="0" toLane="0" via=":B_3_0" tl="B" linkIndex="3" dir="s" state="O"/>
-    <connection from="eC_B" to="eB_A" fromLane="1" toLane="1" via=":B_3_1" tl="B" linkIndex="4" dir="s" state="O"/>
-    <connection from="eC_D" to="eD_E" fromLane="0" toLane="0" via=":D_3_0" tl="D" linkIndex="3" dir="s" state="O"/>
-    <connection from="eC_D" to="eD_E" fromLane="1" toLane="1" via=":D_3_1" tl="D" linkIndex="4" dir="s" state="O"/>
-    <connection from="eC_D" to="eD_I" fromLane="1" toLane="1" via=":D_5_0" tl="D" linkIndex="5" dir="r" state="o"/>
+    <connection from="eC_B" to="eB_I" fromLane="0" toLane="0" via=":B_2_0" tl="gneJ29" linkIndex="2" dir="l" state="O"/>
+    <connection from="eC_B" to="eB_A" fromLane="0" toLane="0" via=":B_3_0" tl="gneJ29" linkIndex="3" dir="s" state="O"/>
+    <connection from="eC_B" to="eB_A" fromLane="1" toLane="1" via=":B_3_1" tl="gneJ29" linkIndex="4" dir="s" state="O"/>
+    <connection from="eC_D" to="eD_E" fromLane="0" toLane="0" via=":D_3_0" tl="gneJ28" linkIndex="3" dir="s" state="O"/>
+    <connection from="eC_D" to="eD_E" fromLane="1" toLane="1" via=":D_3_1" tl="gneJ28" linkIndex="4" dir="s" state="O"/>
+    <connection from="eC_D" to="eD_I" fromLane="1" toLane="1" via=":D_5_0" tl="gneJ28" linkIndex="5" dir="r" state="o"/>
     <connection from="eD_C" to="eC_B" fromLane="0" toLane="0" via=":C_0_0" dir="l" state="M"/>
     <connection from="eD_C" to="eC_B" fromLane="1" toLane="1" via=":C_0_1" dir="l" state="M"/>
     <connection from="eD_E" to="eE_F" fromLane="0" toLane="0" via=":E_0_0" dir="r" state="M"/>
@@ -469,12 +469,12 @@
     <connection from="eD_I" to="eI_H" fromLane="0" toLane="0" via=":I_5_0" tl="gneJ26" linkIndex="5" dir="s" state="o"/>
     <connection from="eD_I" to="eI_H" fromLane="1" toLane="1" via=":I_5_1" tl="gneJ26" linkIndex="6" dir="s" state="o"/>
     <connection from="eD_I" to="eI_B" fromLane="1" toLane="1" via=":I_7_0" tl="gneJ26" linkIndex="7" dir="r" state="o"/>
-    <connection from="eE_D" to="eD_I" fromLane="0" toLane="0" via=":D_0_0" tl="D" linkIndex="0" dir="l" state="O"/>
-    <connection from="eE_D" to="eD_C" fromLane="0" toLane="0" via=":D_1_0" tl="D" linkIndex="1" dir="s" state="O"/>
-    <connection from="eE_D" to="eD_C" fromLane="1" toLane="1" via=":D_1_1" tl="D" linkIndex="2" dir="s" state="O"/>
-    <connection from="eE_F" to="eF_G" fromLane="0" toLane="0" via=":F_0_0" tl="F" linkIndex="0" dir="s" state="O"/>
-    <connection from="eE_F" to="eF_G" fromLane="1" toLane="1" via=":F_0_1" tl="F" linkIndex="1" dir="s" state="O"/>
-    <connection from="eE_F" to="eF_I" fromLane="1" toLane="1" via=":F_2_0" tl="F" linkIndex="2" dir="r" state="o"/>
+    <connection from="eE_D" to="eD_I" fromLane="0" toLane="0" via=":D_0_0" tl="gneJ28" linkIndex="0" dir="l" state="O"/>
+    <connection from="eE_D" to="eD_C" fromLane="0" toLane="0" via=":D_1_0" tl="gneJ28" linkIndex="1" dir="s" state="O"/>
+    <connection from="eE_D" to="eD_C" fromLane="1" toLane="1" via=":D_1_1" tl="gneJ28" linkIndex="2" dir="s" state="O"/>
+    <connection from="eE_F" to="eF_G" fromLane="0" toLane="0" via=":F_0_0" tl="gneJ30" linkIndex="0" dir="s" state="O"/>
+    <connection from="eE_F" to="eF_G" fromLane="1" toLane="1" via=":F_0_1" tl="gneJ30" linkIndex="1" dir="s" state="O"/>
+    <connection from="eE_F" to="eF_I" fromLane="1" toLane="1" via=":F_2_0" tl="gneJ30" linkIndex="2" dir="r" state="o"/>
     <connection from="eF_E" to="eE_D" fromLane="0" toLane="0" via=":E_2_0" dir="l" state="M"/>
     <connection from="eF_E" to="eE_D" fromLane="1" toLane="1" via=":E_2_1" dir="l" state="M"/>
     <connection from="eF_G" to="eG_H" fromLane="0" toLane="0" via=":G_0_0" dir="r" state="M"/>
@@ -483,9 +483,9 @@
     <connection from="eF_I" to="eI_B" fromLane="0" toLane="0" via=":I_1_0" tl="gneJ26" linkIndex="1" dir="s" state="O"/>
     <connection from="eF_I" to="eI_B" fromLane="1" toLane="1" via=":I_1_1" tl="gneJ26" linkIndex="2" dir="s" state="O"/>
     <connection from="eF_I" to="eI_D" fromLane="1" toLane="1" via=":I_3_0" tl="gneJ26" linkIndex="3" dir="r" state="o"/>
-    <connection from="eG_F" to="eF_I" fromLane="0" toLane="0" via=":F_5_0" tl="F" linkIndex="5" dir="l" state="O"/>
-    <connection from="eG_F" to="eF_E" fromLane="0" toLane="0" via=":F_6_0" tl="F" linkIndex="6" dir="s" state="O"/>
-    <connection from="eG_F" to="eF_E" fromLane="1" toLane="1" via=":F_6_1" tl="F" linkIndex="7" dir="s" state="O"/>
+    <connection from="eG_F" to="eF_I" fromLane="0" toLane="0" via=":F_5_0" tl="gneJ30" linkIndex="5" dir="l" state="O"/>
+    <connection from="eG_F" to="eF_E" fromLane="0" toLane="0" via=":F_6_0" tl="gneJ30" linkIndex="6" dir="s" state="O"/>
+    <connection from="eG_F" to="eF_E" fromLane="1" toLane="1" via=":F_6_1" tl="gneJ30" linkIndex="7" dir="s" state="O"/>
     <connection from="eG_H" to="eH_A" fromLane="0" toLane="0" via=":H_0_0" tl="gneJ27" linkIndex="0" dir="s" state="O"/>
     <connection from="eG_H" to="eH_A" fromLane="1" toLane="1" via=":H_0_1" tl="gneJ27" linkIndex="1" dir="s" state="O"/>
     <connection from="eG_H" to="eH_I" fromLane="1" toLane="1" via=":H_2_0" tl="gneJ27" linkIndex="2" dir="r" state="o"/>
@@ -497,12 +497,12 @@
     <connection from="eH_I" to="eI_D" fromLane="0" toLane="0" via=":I_13_0" tl="gneJ26" linkIndex="13" dir="s" state="o"/>
     <connection from="eH_I" to="eI_D" fromLane="1" toLane="1" via=":I_13_1" tl="gneJ26" linkIndex="14" dir="s" state="o"/>
     <connection from="eH_I" to="eI_F" fromLane="1" toLane="1" via=":I_15_0" tl="gneJ26" linkIndex="15" dir="r" state="o"/>
-    <connection from="eI_B" to="eB_A" fromLane="0" toLane="0" via=":B_0_0" tl="B" linkIndex="0" dir="l" state="o"/>
-    <connection from="eI_B" to="eB_C" fromLane="1" toLane="1" via=":B_1_0" tl="B" linkIndex="1" dir="r" state="o"/>
-    <connection from="eI_D" to="eD_C" fromLane="0" toLane="0" via=":D_6_0" tl="D" linkIndex="6" dir="l" state="o"/>
-    <connection from="eI_D" to="eD_E" fromLane="1" toLane="1" via=":D_7_0" tl="D" linkIndex="7" dir="r" state="o"/>
-    <connection from="eI_F" to="eF_E" fromLane="0" toLane="0" via=":F_3_0" tl="F" linkIndex="3" dir="l" state="o"/>
-    <connection from="eI_F" to="eF_G" fromLane="1" toLane="1" via=":F_4_0" tl="F" linkIndex="4" dir="r" state="o"/>
+    <connection from="eI_B" to="eB_A" fromLane="0" toLane="0" via=":B_0_0" tl="gneJ29" linkIndex="0" dir="l" state="o"/>
+    <connection from="eI_B" to="eB_C" fromLane="1" toLane="1" via=":B_1_0" tl="gneJ29" linkIndex="1" dir="r" state="o"/>
+    <connection from="eI_D" to="eD_C" fromLane="0" toLane="0" via=":D_6_0" tl="gneJ28" linkIndex="6" dir="l" state="o"/>
+    <connection from="eI_D" to="eD_E" fromLane="1" toLane="1" via=":D_7_0" tl="gneJ28" linkIndex="7" dir="r" state="o"/>
+    <connection from="eI_F" to="eF_E" fromLane="0" toLane="0" via=":F_3_0" tl="gneJ30" linkIndex="3" dir="l" state="o"/>
+    <connection from="eI_F" to="eF_G" fromLane="1" toLane="1" via=":F_4_0" tl="gneJ30" linkIndex="4" dir="r" state="o"/>
     <connection from="eI_H" to="eH_G" fromLane="0" toLane="0" via=":H_3_0" tl="gneJ27" linkIndex="3" dir="l" state="o"/>
     <connection from="eI_H" to="eH_A" fromLane="1" toLane="1" via=":H_4_0" tl="gneJ27" linkIndex="4" dir="r" state="o"/>
 
