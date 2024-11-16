@@ -1,6 +1,7 @@
 from includes.sumo import SimEnv
 import time
 import traci
+import argparse
 import networkx as nx
 import numpy as np
 import matplotlib.pyplot as plt
@@ -35,12 +36,18 @@ def get_neighbors(semaphore):
 
 
 if __name__ == '__main__':
-    env = SimEnv()
+    parser = argparse.ArgumentParser(description="DAI_RL - Traffic Light Control Simulation")
+    parser.add_argument('--env', type=str, required=True, help='Enveriorment')    
+    parser.add_argument('--nogui',  action="store_true", default=False, help='Sumo GUI')
+    parser.add_argument('--steps', type=int, default=5000, help='Steps number')
+    args = parser.parse_args()
+    print(args.env)
+    env = SimEnv(args)
     env.start_sumo()
         
     step = 0
     delayTime = 0 #1/8
-    n_games = 100
+    n_games = args.steps
     n_steps = 0
     agents = {} 
     scores = {sem: [] for sem in semaphores}

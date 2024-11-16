@@ -16,19 +16,15 @@ class SimEnv():
     This class hendle SUMO simulation environment.
     """
     
-    def __init__(self):
-        opt_parser = optparse.OptionParser()
-        opt_parser.add_option("--nogui", action="store_true",
-                            default=False, help="run the commandline version of sumo")
-        options, args = opt_parser.parse_args()
-        
+    def __init__(self,args):
+        self.args = args
         # check binary
-        if options.nogui:
+        if self.args.nogui:
             sumoBinary = checkBinary('sumo')
         else:
             sumoBinary = checkBinary('sumo-gui')
         
-        self.sumoCmd = ([sumoBinary, "-c", "includes/sumo/2x2/main.sumocfg",
+        self.sumoCmd = ([sumoBinary, "-c", f"includes/sumo/{self.args.env}/main.sumocfg",
                              "--tripinfo-output", "tripinfo.xml", "-S"])
 
 

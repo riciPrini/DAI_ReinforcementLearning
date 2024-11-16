@@ -1,3 +1,23 @@
+# Python cache files
+__pycache__/
 *.pyc
+*.pyo
+*.pyd
+
+# Images
 *.png
+
+# Specific directories
 src/models/
+
+# Generated files
+tripinfo.xml
+
+# Python virtual environment
+venv/
+env/
+.env/
+
+# IDE files
+.vscode/
+.idea
