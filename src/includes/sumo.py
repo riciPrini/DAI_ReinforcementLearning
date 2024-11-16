@@ -28,7 +28,7 @@ class SimEnv():
         else:
             sumoBinary = checkBinary('sumo-gui')
         
-        self.sumoCmd = ([sumoBinary, "-c", "includes/sumo/main.sumocfg",
+        self.sumoCmd = ([sumoBinary, "-c", "includes/sumo/2x2/main.sumocfg",
                              "--tripinfo-output", "tripinfo.xml", "-S"])
 
 
