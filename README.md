@@ -22,7 +22,7 @@ pip install -r requirements.txt
 The simulation can be run using the following command structure:
 
 ```bash
-python main.py --env <environment_name> [--nogui] [--steps <number_of_steps>]
+python src/main.py --env <environment_name> [--nogui] [--steps <number_of_steps>]
 ```
 
 ### Command Line Arguments
@@ -43,11 +43,11 @@ python main.py --env <environment_name> [--nogui] [--steps <number_of_steps>]
 
 1. Basic run with 2x2 environment:
 ```bash
-python main.py --env 2x2
+python src/main.py --env 2x2
 ```
-1. Basic run with 3x3 environment:
+2. Basic run with 3x3 environment:
 ```bash
-python main.py --env 3x3
+python src/main.py --env 3x3
 ```
 
 ## Project Structure
@@ -57,7 +57,7 @@ python main.py --env 3x3
 
 ## Troubleshooting
 
-If you encounter the error "argument --gui: expected one argument", make sure you're using the correct command syntax. The --gui flag doesn't require a value, just include it to enable the GUI.
+If you encounter the error "argument --nogui: expected one argument", make sure you're using the correct command syntax. The --nogui flag doesn't require a value, just include it to disable the GUI.
 
 ## Contributing
 

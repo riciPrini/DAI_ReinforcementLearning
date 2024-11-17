@@ -1,63 +1,15 @@
-<routes>
-   <vType id="car"
-   			vClass="passenger" length="5" accel="3.5" decel="2.2"
-   			sigma="0.8" maxSpeed="10"/>
+<?xml version="1.0" encoding="UTF-8"?>
 
-   <vType id="ev"
-      		vClass="emergency" length="7" accel="5.5" decel="2.2" sigma="0.8"
-      		maxSpeed="20" guiShape="emergency" speedFactor="2.0"
-      		minGapLat="0.2"/>
-
-    <route id="route_0" edges="eA_H eH_I eI_D eD_C eC_B eB_A eA_H eH_I eI_D eD_C eC_B eB_A eA_H eH_I eI_D eD_C eC_B eB_A eA_H eH_I eI_D eD_C eC_B eB_A" />
-    <!--<flow id="carflow" type="car" beg="0" end="0" number="5" from="e1" to="e8"/>-->
-    <!--<flow id="evflow" type="ev" beg="0" end="0" number="1" from="e1" to="e8"/>-->
-
-<!--
-    <vehicle id="0" type="car" route="route_0" depart="0"/> 
-    <vehicle id="1" type="car" route="route_0" depart="3"/>
-    <vehicle id="2" type="car" route="route_0" depart="6"/>
-    <vehicle id="3" type="car" route="route_0" depart="9"/>
-    <vehicle id="4" type="car" route="route_0" depart="12"/>
-
-    <vehicle id="ev_0" type="ev" route="route_0" depart="16"/>
+<!-- generated on 2024-11-17 09:48:59 by Eclipse SUMO netedit Version 1.21.0
 -->
 
-<!--Flows at 0 delay-->
-<flow id="flow_1" type="car" beg="0" end="0" number="15"  departLane="random"  color="223, 59, 229">
-    <route edges="eA_H eH_I eI_D eD_C eC_B eB_A" repeat="10000" />
-</flow>
-
-<flow id="flow_2" type="car" beg="0" end="0" number="15"  departLane="random" color="4, 168, 159">
-    <route edges="eH_G eG_F eF_E eE_D eD_I eI_H" repeat="10000" />
-</flow>
-
-<flow id="flow_3" type="car" beg="0" end="0" number="15"  departLane="random" color="22, 166, 165">
-    <route edges="eA_B eB_I eI_F eF_G eG_H eH_A" repeat="10000" />
-</flow>
-
-<flow id="flow_4" type="car" beg="0" end="0" number="15"  departLane="random" color="210, 230, 191">
-    <route edges="eE_F eF_I eI_B eB_C eC_D eD_E" repeat="10000" />
-</flow>
-
-
-<!--Flows at 30 delay
-
-
-<flow id="flow_1_a" type="car" beg="30" end="0" number="5"  departLane="random"  color="0,237,241">
-    <route edges="eA_H eH_I eI_D eD_C eC_B eB_A" repeat="10000" />
-</flow>
-
-<flow id="flow_2_a" type="car" beg="30" end="0" number="7"  departLane="random" color="42,131,42">
-    <route edges="eH_G eG_F eF_E eE_D eD_I eI_H" repeat="10000" />
-</flow>
-
-<flow id="flow_3_a" type="car" beg="30" end="0" number="4"  departLane="random" color="198,122,239">
-    <route edges="eA_B eB_I eI_F eF_G eG_H eH_A" repeat="10000" />
-</flow>
-
-<flow id="flow_4_a" type="car" beg="30" end="0" number="7"  departLane="random" color="60,177,200">
-    <route edges="eE_F eF_I eI_B eB_C eC_D eD_E" repeat="10000" />
-</flow>
--->
-
+<routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/routes_file.xsd">
+    <!-- VTypes -->
+    <vType id="car" length="5.00" maxSpeed="10.00" vClass="passenger" accel="3.5" decel="2.2" sigma="0.8"/>
+    <vType id="ev" length="7.00" maxSpeed="20.00" speedFactor="normc(2.00,0.00)" vClass="emergency" guiShape="emergency" minGapLat="0.20" accel="5.5" decel="2.2" sigma="0.8"/>
+    <!-- Vehicles, persons and containers (sorted by depart) -->
+    <flow id="flow_0" begin="0.00" color="233,59,229" from="E32" to="E38" via="E8 E7 E14" end="3600.00" vehsPerHour="1800"/>
+    <flow id="flow_1" begin="0.00" color="4,168,159" from="-E0" to="E9" via="-E38 -E14 -E11 -E36 E6 -E5" end="3600.00" vehsPerHour="1800"/>
+    <flow id="flow_3" begin="0.00" color="22,166,165" from="-E34" to="E15" via="E1 E5 E7 E16" end="3600.00" vehsPerHour="1800"/>
+    <flow id="flow_4" begin="0.00" color="210,230,191" from="-E18" to="-E33" via="-E17 -E4 -E1" end="3600.00" vehsPerHour="1800"/>
 </routes>

@@ -8,8 +8,10 @@ class DeepQNetwork(nn.Module):
     def __init__(self, lr, n_actions, name, input_dims, chkpt_dir):
         super(DeepQNetwork, self).__init__()
         self.checkpoint_dir = chkpt_dir
+        if not os.path.exists(self.checkpoint_dir):
+            os.makedirs(self.checkpoint_dir)
+        
         self.checkpoint_file = os.path.join(self.checkpoint_dir, name)
-
         # The deep neural network
         self.fc1 = nn.Linear(input_dims, 128) #* keyword is used for unpacking list
         self.fc2 = nn.Linear(128, n_actions)

@@ -1,3 +1,5 @@
+
+### TODO FIX 3x3
 from includes.sumo import SimEnv
 import time
 import traci
@@ -9,7 +11,6 @@ from includes.DQAgent import DQAgent
 from includes.utils import plot_imgs
 
 
-semaphores = ["gneJ26", "gneJ27", "gneJ28", "gneJ29", "gneJ30"]
 def graph():
     G = nx.Graph()
     for sem in semaphores:
@@ -17,20 +18,33 @@ def graph():
 
     # Aggiungi connessioni (archi) nel grafo
     for sem in semaphores:
-        for neighbor in get_neighbors(sem):
+        for neighbor in get_neighbors(sem):#put grid
             G.add_edge(sem, neighbor)
 
     pos = nx.spring_layout(G)  # Layout del grafo
     fig, ax = plt.subplots(figsize=(8, 6))
     plt.ion()  # Abilita la modalità interattiva per la visualizzazione dinamica
-def get_neighbors(semaphore):
-    neighbors = {
-        "gneJ26": ["gneJ27","gneJ28","gneJ29","gneJ30"],  
-        "gneJ27": ["gneJ26"],   
-        "gneJ28": ["gneJ26"],   
-        "gneJ29": ["gneJ26"],   
-        "gneJ30": ["gneJ26"],   
-    }
+def get_neighbors(semaphore,grid):
+    if grid == "2x2":
+        neighbors = {
+            "gneJ26": ["gneJ27","gneJ28","gneJ29","gneJ30"],  
+            "gneJ27": ["gneJ26"],   
+            "gneJ28": ["gneJ26"],   
+            "gneJ29": ["gneJ26"],   
+            "gneJ30": ["gneJ26"],   
+        }
+    elif grid == "3x3":
+        neighbors = {
+            "gneJ24": ["gneJ25","gneJ26"],  
+            "gneJ25": ["gneJ24","gneJ27"],  
+            "gneJ26": ["gneJ24","gneJ27","gneJ28"],  
+            "gneJ27": ["gneJ25","gneJ26","gneJ29"],   
+            "gneJ28": ["gneJ26","gneJ29","gneJ30"],   
+            "gneJ29": ["gneJ27","gneJ28","gneJ31"],   
+            "gneJ30": ["gneJ28","gneJ31"],   
+            "gneJ31": ["gneJ29","gneJ30"],   
+        }
+        
     return neighbors.get(semaphore, [])
 
 
@@ -41,10 +55,12 @@ if __name__ == '__main__':
     parser.add_argument('--nogui',  action="store_true", default=False, help='Sumo GUI')
     parser.add_argument('--steps', type=int, default=5000, help='Steps number')
     args = parser.parse_args()
-    print(args.env)
-    env = SimEnv(args)
-    env.start_sumo()
-        
+    grid = args.env 
+    
+    if grid == "2x2":
+        semaphores = ["gneJ26", "gneJ27", "gneJ28", "gneJ29", "gneJ30"]
+    elif grid == "3x3":
+        semaphores = ["gneJ24","gneJ25","gneJ26", "gneJ27", "gneJ28", "gneJ29", "gneJ30","gneJ31"]
     step = 0
     delayTime = 0 #1/8
     n_games = args.steps
@@ -59,13 +75,17 @@ if __name__ == '__main__':
 
     best_score = -np.inf
     load_checkpoint = False
+        
+    env = SimEnv(args)
+    env.start_sumo()
+        
 
     for sem in semaphores:
         agents[sem] = DQAgent(gamma=0.99, epsilon=1, lr=0.0001,
                           input_dims=8, n_actions=2, mem_size=50000,
                           batch_size=32, replace=1000, eps_dec=1e-5,
-                          chkpt_dir='models/', algo='DQNAgent',
-                          env_name='SUMO_tlc', TLC_name=sem)
+                          chkpt_dir=f'src/models/{grid}', algo='DQNAgent',
+                          env_name=f'SUMO_tlc_{grid}', TLC_name=sem)
 
     if load_checkpoint:
         for sem, agent in agents.items():
@@ -88,10 +108,10 @@ if __name__ == '__main__':
             neighbors = {}
             received_message = False
             # Get neighbor queues
-            neighbor_queues = [agents[neighbor].get_queue_length() for neighbor in get_neighbors(sem)]
+            neighbor_queues = [agents[neighbor].get_queue_length() for neighbor in get_neighbors(sem,grid)]
             # Update with new neigh info
             agent.update_with_neighbor_info(neighbor_queues)
-            for neighbor in get_neighbors(sem):
+            for neighbor in get_neighbors(sem,grid):
                 queue_length = agents[neighbor].get_queue_length()
                 neighbors[neighbor] = queue_length 
                 if queue_length > 0:
