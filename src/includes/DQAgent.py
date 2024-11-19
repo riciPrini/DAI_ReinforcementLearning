@@ -81,18 +81,22 @@ class DQAgent(object):
 
         return self.reward
     def vehicle_counter(self,vehicle_wait_time,road_id,lanes):
-                if road_id == lanes[0]: #North
-                    self.no_veh_N += 1 
-                    self.wait_time_N += vehicle_wait_time                    
-                elif road_id == lanes[1]: #East
-                    self.no_veh_E += 1 
-                    self.wait_time_E += vehicle_wait_time
-                elif road_id == lanes[2]: #West
-                    self.no_veh_W += 1 
-                    self.wait_time_W += vehicle_wait_time
-                elif road_id == lanes[3]: #South
-                    self.no_veh_S += 1 
-                    self.wait_time_S += vehicle_wait_time
+        """
+        Function that counts the number of waiting vehicles in the traffic light
+        """
+
+        if road_id == lanes[0]: #North
+            self.no_veh_N += 1 
+            self.wait_time_N += vehicle_wait_time                    
+        elif road_id == lanes[1]: #East
+            self.no_veh_E += 1 
+            self.wait_time_E += vehicle_wait_time
+        elif road_id == lanes[2]: #West
+            self.no_veh_W += 1 
+            self.wait_time_W += vehicle_wait_time
+        elif road_id == lanes[3]: #South
+            self.no_veh_S += 1 
+            self.wait_time_S += vehicle_wait_time
     def get_avg_wait_time(self):
         """
         Function that return the avg wait time of vehicles in the traffic light. 
@@ -110,16 +114,22 @@ class DQAgent(object):
 
             #Count vehicle at the TLC junction
             if vehicle_speed < 1: # Count only stoped vehicles
-                if self.TLC_name == "gneJ26":
+                if self.TLC_name == "gneJ24":
+                    self.vehicle_counter(vehicle_wait_time,road_id,["","eL_N","eS_P","E55"]) #North,East,West,South
+                elif self.TLC_name == "gneJ25":
+                    self.vehicle_counter(vehicle_wait_time,road_id,["","eT_U","eN_L","eK_O"]) #North,East,West,South
+                elif self.TLC_name == "gneJ26":
                     self.vehicle_counter(vehicle_wait_time,road_id,["eB_I","eD_I","eH_I","eF_I"]) #North,East,West,South
                 elif self.TLC_name == "gneJ27":
-                    self.vehicle_counter(vehicle_wait_time,road_id,["eA_H","eI_H","","eG_H"]) #North,East,West,South
+                    self.vehicle_counter(vehicle_wait_time,road_id,["eA_H","eI_H","-E9","eG_H"]) #North,East,West,South
                 elif self.TLC_name == "gneJ28":
-                    self.vehicle_counter(vehicle_wait_time,road_id,["eC_D","","eI_D","eE_D"]) #North,East,West,South
+                    self.vehicle_counter(vehicle_wait_time,road_id,["eC_D","-E16","eI_D","eE_D"]) #North,East,West,South
                 elif self.TLC_name == "gneJ29":
-                    self.vehicle_counter(vehicle_wait_time,road_id,["","eC_B","eA_B","eI_B"]) #North,East,West,South
+                    self.vehicle_counter(vehicle_wait_time,road_id,["E4","eC_B","eA_B","eI_B"]) #North,East,West,South
                 elif self.TLC_name == "gneJ30":
                     self.vehicle_counter(vehicle_wait_time,road_id,["eI_F","eE_F","eG_F",""]) #North,East,West,South
+                elif self.TLC_name == "gneJ31":
+                    self.vehicle_counter(vehicle_wait_time,road_id,["E15","-E0","eF_E",""]) #North,East,West,South
         
         return stat.mean([self.wait_time_N, self.wait_time_E, self.wait_time_W, self.wait_time_S])
 
@@ -169,16 +179,22 @@ class DQAgent(object):
 
             #Count vehicle at the TLC junction
             if vehicle_speed < 1: # Count only stoped vehicles
-                if self.TLC_name == "gneJ26":
+                if self.TLC_name == "gneJ24":
+                    self.vehicle_counter(vehicle_wait_time,road_id,["","eL_N","eS_P","E55"]) #North,East,West,South
+                elif self.TLC_name == "gneJ25":
+                    self.vehicle_counter(vehicle_wait_time,road_id,["","eT_U","eN_L","eK_O"]) #North,East,West,South
+                elif self.TLC_name == "gneJ26":
                     self.vehicle_counter(vehicle_wait_time,road_id,["eB_I","eD_I","eH_I","eF_I"]) #North,East,West,South
                 elif self.TLC_name == "gneJ27":
-                    self.vehicle_counter(vehicle_wait_time,road_id,["eA_H","eI_H","","eG_H"]) #North,East,West,South
+                    self.vehicle_counter(vehicle_wait_time,road_id,["eA_H","eI_H","-E9","eG_H"]) #North,East,West,South
                 elif self.TLC_name == "gneJ28":
-                    self.vehicle_counter(vehicle_wait_time,road_id,["eC_D","","eI_D","eE_D"]) #North,East,West,South
+                    self.vehicle_counter(vehicle_wait_time,road_id,["eC_D","-E16","eI_D","eE_D"]) #North,East,West,South
                 elif self.TLC_name == "gneJ29":
-                    self.vehicle_counter(vehicle_wait_time,road_id,["","eC_B","eA_B","eI_B"]) #North,East,West,South
+                    self.vehicle_counter(vehicle_wait_time,road_id,["E4","eC_B","eA_B","eI_B"]) #North,East,West,South
                 elif self.TLC_name == "gneJ30":
                     self.vehicle_counter(vehicle_wait_time,road_id,["eI_F","eE_F","eG_F",""]) #North,East,West,South
+                elif self.TLC_name == "gneJ31":
+                    self.vehicle_counter(vehicle_wait_time,road_id,["E15","-E0","eF_E",""]) #North,East,West,South
             
 
         state_space = [self.wait_time_N, self.wait_time_E, self.wait_time_W, self.wait_time_S,
