@@ -99,6 +99,7 @@ if __name__ == '__main__':
     
 
     for i in range(n_games):
+        print(i)
         total_score = 0 # total scores of all traffic_lights
         total_wait_time = 0  # Total wait time (for metrics purposes)
         total_queue_length = 0  # Total queue length
@@ -123,6 +124,7 @@ if __name__ == '__main__':
             score += reward
 
             # Metrics purposes 
+            # print(info["avg_wait_time"])
             total_wait_time += info["avg_wait_time"]
             total_queue_length += info["queue_length"]
 
@@ -135,28 +137,13 @@ if __name__ == '__main__':
             n_steps += 1
             total_score += score # accumulate multi-tl scores
             
-            # node_colors = []
-
-            # for node in G.nodes():
-            #     if node == sem and received_message:
-            #         node_colors.append('red')  # Cambia colore a rosso se ha ricevuto info
-            #     else:
-            #         node_colors.append('blue')  # Altrimenti rimane blu
-                
-            # queue_lengths.append(sum(neighbor_queues))
-            # # # Disegna il grafo durante ogni ciclo
-            # ax.clear()
-            # nx.draw(G, pos, with_labels=True, node_size=3000,
-            #         node_color=node_colors, ax=ax)
-            # ax.set_title(f"Simulation Step {i} | Semaphore: {sem}")
-            # plt.draw()
-            # plt.pause(0.1)  # Pausa breve per aggiornare la visualizzazione
+            total_episode_reward += reward
             
             avg_score = np.mean(scores[sem][-100:]) #if sem in scores else 0
 
             ## DEBUG
             
-            agent.print_neighbor_info(neighbors)
+            # agent.print_neighbor_info(neighbors)
             
 
             if avg_score > best_score:
@@ -168,19 +155,18 @@ if __name__ == '__main__':
             steps_array.append(n_steps)
         
 
-        #FIX
         avg_wait_time = total_wait_time / len(semaphores) if len(semaphores) > 0 else 0
         avg_queue_length = total_queue_length / len(semaphores) 
-
         avg_wait_times_history.append(avg_wait_time)
-        avg_rewards_history.append(total_episode_reward)
+        #FIX
+        avg_reward_episode = total_score / len(semaphores)
+        avg_rewards_history.append(avg_reward_episode)
         eps_history.append(np.mean([agent.epsilon for agent in agents.values()]))
         total_rewards.append(total_score)
       
 
         env.simulationStep()
         time.sleep(delayTime)
-            # step+=1
 
 
    
@@ -190,8 +176,9 @@ if __name__ == '__main__':
     y = [np.mean([scores[sem][i] for sem in semaphores]) for i in range(len(scores[semaphores[0]]))]
     
     
-    # plot_imgs(n_games,y,steps_array,eps_history,avg_wait_times_history,avg_rewards_history) # (Un)comment to plot
     
 
     env.close_sumo() 
 
+    # (Un)comment to plot
+    plot_imgs(n_games,y,steps_array,eps_history,avg_wait_times_history,avg_rewards_history) 

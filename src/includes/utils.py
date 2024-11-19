@@ -42,6 +42,8 @@ def plot_learning_curve(x, scores, epsilons, filename, lines=None):
     plt.savefig(filename)
 
 def plot_history_times(x,avg_wait,filename):
+    print(avg_wait)
+    print(x)
     print("Saving plot...")
     plt.figure()
     plt.plot(range(x), avg_wait, label='Average Wait Time')

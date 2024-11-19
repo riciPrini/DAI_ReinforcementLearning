@@ -80,6 +80,7 @@ class DQAgent(object):
             self.acc_wait_time = self.acc_wait_time[-3:]
 
         return self.reward
+    
     def vehicle_counter(self,vehicle_wait_time,road_id,lanes):
         """
         Function that counts the number of waiting vehicles in the traffic light
