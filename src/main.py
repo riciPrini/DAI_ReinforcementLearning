@@ -99,7 +99,7 @@ if __name__ == '__main__':
     
 
     for i in range(n_games):
-        print(i)
+        # print(i)
         total_score = 0 # total scores of all traffic_lights
         total_wait_time = 0  # Total wait time (for metrics purposes)
         total_queue_length = 0  # Total queue length
@@ -143,7 +143,7 @@ if __name__ == '__main__':
 
             ## DEBUG
             
-            # agent.print_neighbor_info(neighbors)
+            agent.print_neighbor_info(neighbors)
             
 
             if avg_score > best_score:
@@ -181,4 +181,4 @@ if __name__ == '__main__':
     env.close_sumo() 
 
     # (Un)comment to plot
-    plot_imgs(n_games,y,steps_array,eps_history,avg_wait_times_history,avg_rewards_history) 
+    # plot_imgs(n_games,y,steps_array,eps_history,avg_wait_times_history,avg_rewards_history) 
