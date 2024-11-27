@@ -2,3 +2,4 @@
 - COMPARE che usa q learning e no, con flow diversi.
 - Io uso un q learning per env? o per semaforo?
 - Cambiare metriche: tipo quante macchine arrivano alla fine della simulazione?
+- Ma in questo caso cosa sto massimizzando?

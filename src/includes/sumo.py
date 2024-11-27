@@ -16,15 +16,20 @@ class SimEnv():
     This class hendle SUMO simulation environment.
     """
     
-    def __init__(self,args):
+    def __init__(self,args,compare=False):
+        self.total_throughput = 0
+        self.total_departed = 0
         self.args = args
         # check binary
         if self.args.nogui:
             sumoBinary = checkBinary('sumo')
         else:
             sumoBinary = checkBinary('sumo-gui')
-        
-        self.sumoCmd = ([sumoBinary, "-c", f"src/includes/sumo/{self.args.env}/main.sumocfg",
+        if compare:
+             self.sumoCmd = ([sumoBinary, "-c", f"src/includes/sumo/{self.args.env}_compare/main.sumocfg",
+                             "--tripinfo-output", "tripinfo.xml", "-S"])
+        else:
+            self.sumoCmd = ([sumoBinary, "-c", f"src/includes/sumo/{self.args.env}/main.sumocfg",
                              "--tripinfo-output", "tripinfo.xml", "-S"])
 
 
@@ -48,3 +53,19 @@ class SimEnv():
         Increas Simulation one step.
         """
         traci.simulationStep()
+
+    def getArrivedVehicles(self):
+        return self.total_throughput
+    def getDepartedVehicles(self):
+        return self.total_departed
+    def ArrivedVehicles(self):
+
+        arrived = traci.simulation.getArrivedNumber()
+        departed = traci.simulation.getDepartedNumber()
+        vehicles_in_network = traci.vehicle.getIDList()
+
+        self.total_throughput += arrived
+        self.total_departed += departed
+
+        print(f"Arrived: {arrived}, Departed: {departed}, In Network: {len(vehicles_in_network)}")
+        

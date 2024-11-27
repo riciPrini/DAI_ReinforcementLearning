@@ -11,19 +11,7 @@ from includes.DQAgent import DQAgent
 from includes.utils import plot_imgs
 
 
-def graph():
-    G = nx.Graph()
-    for sem in semaphores:
-        G.add_node(sem)
 
-    # Aggiungi connessioni (archi) nel grafo
-    for sem in semaphores:
-        for neighbor in get_neighbors(sem):#put grid
-            G.add_edge(sem, neighbor)
-
-    pos = nx.spring_layout(G)  # Layout del grafo
-    fig, ax = plt.subplots(figsize=(8, 6))
-    plt.ion()  # Abilita la modalità interattiva per la visualizzazione dinamica
 def get_neighbors(semaphore,grid):
     if grid == "2x2":
         neighbors = {
