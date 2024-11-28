@@ -26,7 +26,7 @@ class SimEnv():
         else:
             sumoBinary = checkBinary('sumo-gui')
         if compare:
-             self.sumoCmd = ([sumoBinary, "-c", f"src/includes/sumo/{self.args.env}_compare/main.sumocfg",
+             self.sumoCmd = ([sumoBinary, "-c", f"src/includes/sumo/2x2_compare/main.sumocfg",
                              "--tripinfo-output", "tripinfo.xml", "-S"])
         else:
             self.sumoCmd = ([sumoBinary, "-c", f"src/includes/sumo/{self.args.env}/main.sumocfg",
@@ -54,10 +54,21 @@ class SimEnv():
         """
         traci.simulationStep()
 
+    def getIDList(self):
+        return traci.vehicle.getIDList()
+    
+    def getAccumulatedWaitingTime(self,id):
+        return traci.vehicle.getAccumulatedWaitingTime(id)
+        
+    def getSpeed(self,id):
+        return traci.vehicle.getSpeed(id)
+
     def getArrivedVehicles(self):
         return self.total_throughput
+    
     def getDepartedVehicles(self):
         return self.total_departed
+    
     def ArrivedVehicles(self):
 
         arrived = traci.simulation.getArrivedNumber()
@@ -67,5 +78,5 @@ class SimEnv():
         self.total_throughput += arrived
         self.total_departed += departed
 
-        print(f"Arrived: {arrived}, Departed: {departed}, In Network: {len(vehicles_in_network)}")
+        # print(f"Arrived: {arrived}, Departed: {departed}, In Network: {len(vehicles_in_network)}")
         
