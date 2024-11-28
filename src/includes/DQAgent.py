@@ -13,8 +13,11 @@ class DQAgent(object):
     """
     def __init__(self, gamma, epsilon, lr, n_actions, input_dims,
                  mem_size, batch_size, eps_min=0.01, eps_dec=5e-7,
-                 replace=1000, algo=None, env_name=None, chkpt_dir='tmp/dqn', TLC_name="gneJ26"):
+                 lambda_penalty=0.1, alpha_throughput=0.1,replace=1000, 
+                 algo=None, env_name=None, chkpt_dir='tmp/dqn', TLC_name="gneJ26"):
         self.gamma = gamma
+        self.lambda_penalty = lambda_penalty
+        self.alpha_throughput = alpha_throughput  
         self.epsilon = epsilon
         self.lr = lr
         self.n_actions = n_actions
@@ -69,10 +72,18 @@ class DQAgent(object):
     def get_reward(self):
 
         current_wait_time = self.get_avg_wait_time()
+        queue_length_penalty = self.get_queue_length() 
+
+        throughput = self.get_throughput()
+
         if len(self.acc_wait_time) == 0:
             self.reward = 0
         else:
-            self.reward = self.acc_wait_time[-1] - current_wait_time
+            self.reward = (
+            (self.acc_wait_time[-1] - current_wait_time)  # Reducing waiting time
+            - self.lambda_penalty * queue_length_penalty  # Queue penality
+            + self.alpha_throughput * throughput          # throughput_alpha
+        )
         
         self.acc_wait_time.append(current_wait_time)
 
@@ -287,6 +298,32 @@ class DQAgent(object):
 
         self.decrement_epsilon()
 
+    def get_edges(self):
+        edges_list = list()
+
+        if self.TLC_name == "gneJ26":
+            edges_list = ["eB_I","eD_I","eH_I","eF_I"] #North,East,West,South
+        elif self.TLC_name == "gneJ27":
+            edges_list = ["eA_H","eI_H","-E9","eG_H"] #North,East,West,South
+        elif self.TLC_name == "gneJ28":
+            edges_list = ["eC_D","-E16","eI_D","eE_D"] #North,East,West,South
+        elif self.TLC_name == "gneJ29":
+            edges_list = ["E4","eC_B","eA_B","eI_B"] #North,East,West,South
+        elif self.TLC_name == "gneJ30":
+            edges_list = ["eI_F","eE_F","eG_F",""] #North,East,West,South
+        elif self.TLC_name == "gneJ31":
+            edges_list = ["E15","-E0","eF_E",""] #North,East,West,South
+        
+        return edges_list
+    
+    #NO IDEA se sia giust. Di sicuro gli edges non lo sono
+    def get_throughput(self):
+        throughput = 0
+        # Conta i veicoli che sono passati attraverso gli outgoing edges
+        outgoing_edges = self.get_edges()  # Cambia con gli edge effettivi della tua rete
+        for edge in outgoing_edges:
+            throughput += traci.edge.getLastStepVehicleNumber(edge)
+        return throughput
     ### MAS
     def get_queue_length(self):
         return sum([self.no_veh_N, self.no_veh_E, self.no_veh_W, self.no_veh_S])
