@@ -8,7 +8,7 @@ import networkx as nx
 import numpy as np
 import matplotlib.pyplot as plt
 from includes.DQAgent import DQAgent
-from includes.utils import plot_imgs
+from includes.utils import *
 
 
 
@@ -57,6 +57,7 @@ if __name__ == '__main__':
     scores = {sem: [] for sem in semaphores}
     eps_history = []
     avg_wait_times_history = []
+    throughput_history = []
     avg_rewards_history = []
     total_rewards = []
     steps_array = []
@@ -92,6 +93,7 @@ if __name__ == '__main__':
         total_wait_time = 0  # Total wait time (for metrics purposes)
         total_queue_length = 0  # Total queue length
         total_episode_reward = 0 # rewards sum for each epsiode
+        total_throughput = 0
         queue_lengths = []
         for sem, agent in agents.items():
             neighbors = {}
@@ -115,6 +117,7 @@ if __name__ == '__main__':
             # print(info["avg_wait_time"])
             total_wait_time += info["avg_wait_time"]
             total_queue_length += info["queue_length"]
+            total_throughput += info["throughput"]
 
             if not load_checkpoint:
                 agent.store_transition(observations[sem], action, reward, observation_)
@@ -131,7 +134,7 @@ if __name__ == '__main__':
 
             ## DEBUG
             
-            agent.print_neighbor_info(neighbors)
+            # agent.print_neighbor_info(neighbors)
             
 
             if avg_score > best_score:
@@ -145,8 +148,10 @@ if __name__ == '__main__':
 
         avg_wait_time = total_wait_time / len(semaphores) if len(semaphores) > 0 else 0
         avg_queue_length = total_queue_length / len(semaphores) 
+        avg_throughput = total_throughput /len(semaphores)
         avg_wait_times_history.append(avg_wait_time)
-        #FIX
+        throughput_history.append(avg_throughput)
+        
         avg_reward_episode = total_score / len(semaphores)
         avg_rewards_history.append(avg_reward_episode)
         eps_history.append(np.mean([agent.epsilon for agent in agents.values()]))
@@ -169,4 +174,4 @@ if __name__ == '__main__':
     env.close_sumo() 
 
     # (Un)comment to plot
-    # plot_imgs(n_games,y,steps_array,eps_history,avg_wait_times_history,avg_rewards_history) 
+    plot_imgs(n_games,y,steps_array,eps_history,avg_wait_times_history,avg_rewards_history,throughput_history) 

@@ -4,11 +4,13 @@ filename_learning = 'TLC_naive_dqn.png'
 filename_waiting = 'waiting_time.png'
 filename_avg_reward = 'avg_reward.png'
 filename_epsilon_decay = 'epsilon_decay.png'
-def plot_imgs(n_games,y,steps_array,eps_history,avg_wait_times_history,avg_rewards_history):
+filename_throughput = 'avg_throughput.png'
+def plot_imgs(n_games,y,steps_array,eps_history,avg_wait_times_history,avg_rewards_history,avg_throughput):
     plot_learning_curve(steps_array, y, eps_history, filename_learning)
-    plot_history_times(n_games,avg_wait_times_history,filename_waiting)
-    plot_history_times(n_games,avg_rewards_history,filename_avg_reward)
-    plot_history_times(n_games,eps_history,filename_epsilon_decay)
+    plot_history_times(n_games,avg_wait_times_history,filename_waiting,"Average Wait Time","Average Wait Time per Episode")
+    plot_history_times(n_games,avg_rewards_history,filename_avg_reward,"Average Reward", "Average Reward per Episode")
+    plot_history_times(n_games,eps_history,filename_epsilon_decay,"Epsilon Decay","Epsilon Decay per Episode")
+    plot_history_times(n_games,avg_throughput,filename_throughput,"Average Throughput","Average Throughput per Episode")
 
 
 def plot_learning_curve(x, scores, epsilons, filename, lines=None):
@@ -41,14 +43,15 @@ def plot_learning_curve(x, scores, epsilons, filename, lines=None):
 
     plt.savefig(filename)
 
-def plot_history_times(x,avg_wait,filename):
-    print(avg_wait)
-    print(x)
+def plot_history_times(x,avg_wait,filename,label,title):
+    # print(avg_wait)
+    # print(x)
     print("Saving plot...")
     plt.figure()
     plt.plot(range(x), avg_wait, label='Average Wait Time')
     plt.xlabel('Episodes')
-    plt.ylabel('Average Wait Time')
-    plt.title('Average Wait Time per Episode')
+    plt.ylabel(label)
+    plt.title(title)
     plt.legend()
     plt.savefig(filename)
+

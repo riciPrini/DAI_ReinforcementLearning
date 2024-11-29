@@ -172,7 +172,8 @@ class DQAgent(object):
         "wait_time_W": self.wait_time_W,
         "wait_time_S": self.wait_time_S,
         "avg_wait_time": self.get_avg_wait_time(),
-        "queue_length": self.get_queue_length()
+        "queue_length": self.get_queue_length(),
+        "throughput": self.get_throughput()
         }
 
         return state, reward, info
@@ -302,17 +303,15 @@ class DQAgent(object):
         edges_list = list()
 
         if self.TLC_name == "gneJ26":
-            edges_list = ["eB_I","eD_I","eH_I","eF_I"] #North,East,West,South
+            edges_list = ["eI_B","eI_D","eI_H","eI_F"] #North,East,West,South
         elif self.TLC_name == "gneJ27":
-            edges_list = ["eA_H","eI_H","-E9","eG_H"] #North,East,West,South
+            edges_list = ["eH_A","eH_I","","eH_G"] #North,East,West,South
         elif self.TLC_name == "gneJ28":
-            edges_list = ["eC_D","-E16","eI_D","eE_D"] #North,East,West,South
+            edges_list = ["eD_C","","eD_I","eD_E"] #North,East,West,South
         elif self.TLC_name == "gneJ29":
-            edges_list = ["E4","eC_B","eA_B","eI_B"] #North,East,West,South
+            edges_list = ["","eB_C","eB_A","eB_I"] #North,East,West,South
         elif self.TLC_name == "gneJ30":
-            edges_list = ["eI_F","eE_F","eG_F",""] #North,East,West,South
-        elif self.TLC_name == "gneJ31":
-            edges_list = ["E15","-E0","eF_E",""] #North,East,West,South
+            edges_list = ["eF_I","eF_E","eF_G",""] #North,East,West,South
         
         return edges_list
     
@@ -322,7 +321,8 @@ class DQAgent(object):
         # Conta i veicoli che sono passati attraverso gli outgoing edges
         outgoing_edges = self.get_edges()  # Cambia con gli edge effettivi della tua rete
         for edge in outgoing_edges:
-            throughput += traci.edge.getLastStepVehicleNumber(edge)
+            if edge is not "":
+                throughput += traci.edge.getLastStepVehicleNumber(edge)
         return throughput
     ### MAS
     def get_queue_length(self):

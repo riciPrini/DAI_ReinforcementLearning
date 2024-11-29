@@ -108,8 +108,8 @@ def main():
             agents[sem] = DQAgent(gamma=0.99, epsilon=0, lr=0.0001,
                                   input_dims=8, n_actions=2, mem_size=50000,
                                   batch_size=32, replace=1000, eps_dec=1e-5,
-                                  chkpt_dir=f'src/models/{grid}', algo='DQNAgent',
-                                  env_name=f'SUMO_tlc_{grid}', TLC_name=sem)
+                                  chkpt_dir=f'.\src\models\{grid}', algo='DQNAgent',
+                                  env_name=f'SUMO_tlc', TLC_name=sem)
 
             agents[sem].load_models()
 
