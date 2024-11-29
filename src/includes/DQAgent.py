@@ -109,6 +109,9 @@ class DQAgent(object):
         elif road_id == lanes[3]: #South
             self.no_veh_S += 1 
             self.wait_time_S += vehicle_wait_time
+        
+    
+        
     def get_avg_wait_time(self):
         """
         Function that return the avg wait time of vehicles in the traffic light. 
