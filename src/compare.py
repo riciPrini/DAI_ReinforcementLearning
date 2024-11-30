@@ -2,6 +2,8 @@ from includes.sumo import SimEnv
 import time
 import argparse
 from includes.DQAgent import DQAgent
+from includes.Agent import Agent
+from includes.utils import plot_compare
 semaphores = ["gneJ26", "gneJ27", "gneJ28", "gneJ29", "gneJ30"]
 
 def simulate_with_rl(env, agents, semaphores, n_games, delay_time):
@@ -54,51 +56,29 @@ def simulate_with_rl(env, agents, semaphores, n_games, delay_time):
     print(sum(avg_wait_times_history))
 
 
-def simulate_without_rl(env, n_games, delay_time):
+def simulate_without_rl(env, agents, n_games, delay_time):
     """Esegue la simulazione senza RL."""
-    total_wait_time = {sem: 0 for sem in semaphores}  # Tempo totale di attesa per ogni semaforo
-    total_queue_length = {sem: 0 for sem in semaphores}  # Lunghezza totale delle code per ogni semaforo
-    num_vehicles_processed = {sem: 0 for sem in semaphores}  # Veicoli processati per semaforo
-    avg_wait_times_history = []  # Storico tempi medi di attesa
-    num_steps = 0
+    avg_wait_times_history = []  
+    decision_interval = 10
 
     for i in range(n_games):
-        step_wait_time = {sem: 0 for sem in semaphores}  # Tempo di attesa per passo
-        step_queue_length = {sem: 0 for sem in semaphores}  # Lunghezza delle code per pass
+        total_wait_time = 0
 
-        # Stampa i risultati per ogni semaforo
-        for sem in semaphores:
-            # Ottieni la lista di tutti i veicoli nella simulazione
-            for vehicle_id in env.getIDList():
-                vehicle_wait_time = env.getAccumulatedWaitingTime(vehicle_id)
-                vehicle_speed = env.getSpeed(vehicle_id)
+        if i % decision_interval == 0:
+            for sem, agent in agents.items():
+                    # Aggiorna metriche
+                    agent.reset_lane_traffic_info_params()
+                    total_wait_time += agent.info()["avg_wait_time"]
 
-            # Identifica il semaforo associato al veicolo
-                controlling_tls = env.getVehicleControlTLS(vehicle_id)  # Trova il TLS che controlla il veicolo
-                if controlling_tls and controlling_tls in semaphores:
-                    step_wait_time[controlling_tls] += vehicle_wait_time
-                    num_vehicles_processed[controlling_tls] += 1
-
-                # Considera un veicolo in coda se la velocità è molto bassa
-                    if vehicle_speed < 0.1:  # Velocità considerata come fermo
-                        step_queue_length[controlling_tls] += 1
-            
-            # Aggiorna le metriche totali per ogni semaforo
-            total_wait_time[sem] += step_wait_time[sem]
-            total_queue_length[sem] += step_queue_length[sem]
-            if num_vehicles_processed[sem] > 0:
-                avg_wait_time = total_wait_time[sem] / num_vehicles_processed[sem]
-             
-        avg_wait_time = total_wait_time[sem] / num_steps if num_steps > 0 else 0
-        avg_queue_length = total_queue_length[sem] / num_steps if num_steps > 0 else 0
-        print(f"Episode {i} Avg Wait Time: {avg_wait_time:.2f}, "
-                  f"Avg Queue Length: {avg_queue_length:.2f}, Vehicles Processed: {num_vehicles_processed[sem]}")
-
-        avg_wait_times_history.append(avg_wait_time)   
-        num_steps += 1
+                # Stampa metriche
+        
+            avg_wait_time = total_wait_time / len(semaphores)
+            print(f"Step {i} | Avg Wait Time:  {avg_wait_time:.2f}")
+            avg_wait_times_history.append(avg_wait_time)
 
         env.simulationStep()
         time.sleep(delay_time)
+    
     print(avg_wait_times_history)
     
     print(sum(avg_wait_times_history))
@@ -126,17 +106,20 @@ def main():
             agents[sem] = DQAgent(gamma=0.99, epsilon=0, lr=0.0001,
                                   input_dims=8, n_actions=2, mem_size=50000,
                                   batch_size=32, replace=1000, eps_dec=1e-5,
-                                  chkpt_dir=f'.\src\models\{grid}', algo='DQNAgent',
-                                  env_name=f'SUMO_tlc_{grid}', TLC_name=sem)
+                                  chkpt_dir=f'./src/models/{grid}', algo='DQNAgent',
+                                  env_name=f'SUMO_tlc', TLC_name=sem)
 
             agents[sem].load_models()
 
         simulate_with_rl(env, agents, semaphores, n_games, delay_time)
     else:
-        simulate_without_rl(env, n_games, delay_time)
+        agents = {}
+        for sem in semaphores:
+            agents[sem] = Agent(TLC_name=sem)
+        simulate_without_rl(env, agents, n_games,  delay_time)
 
     print(f"Throughput: {env.getArrivedVehicles()} vehicles arrived out of {env.getDepartedVehicles()} departed.")
     env.close_sumo()
-
 if __name__ == '__main__':
-    main()
+    plot_compare()
+    # main()

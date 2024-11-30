@@ -79,36 +79,4 @@ class SimEnv():
         self.total_departed += departed
 
         # print(f"Arrived: {arrived}, Departed: {departed}, In Network: {len(vehicles_in_network)}")
-    def getVehicleControlTLS(self,vehicle_id):
-        """
-        Determina il semaforo che controlla il veicolo specificato.
-
-        Args:
-            env: Oggetto SUMO con l'API.
-            vehicle_id: ID del veicolo.
-
-        Returns:
-            tls_id: ID del semaforo che controlla il veicolo (o None se non controllato).
-        """
-        try:
-        # Ottieni l'ID della corsia in cui si trova il veicolo
-            lane_id = traci.vehicle.getRoadID(vehicle_id)
-        
-        # Ottieni il semaforo che controlla la corsia
-            tls_id = None
-            if lane_id in ["eB_I","eD_I","eH_I","eF_I"]:
-                tls_id = "gneJ26"
-            elif lane_id in ["eA_H","eI_H","-E9","eG_H"]:
-                tls_id = "gneJ27"
-            elif lane_id in ["eC_D","-E16","eI_D","eE_D"]:
-                tls_id = "gneJ28"
-            elif lane_id in ["E4","eC_B","eA_B","eI_B"]:
-                tls_id = "gneJ29"
-            elif lane_id in ["eI_F","eE_F","eG_F",""]:
-                tls_id = "gneJ30"
-
-        
-            return tls_id if tls_id else None
-        except Exception as e:
-            print(f"Errore nel determinare il TLS per il veicolo {vehicle_id}: {e}")
-        return None
+    
