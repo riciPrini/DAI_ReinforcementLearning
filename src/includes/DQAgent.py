@@ -12,7 +12,7 @@ class DQAgent(object):
         This is single agent class.
     """
     def __init__(self, gamma, epsilon, lr, n_actions, input_dims,
-                 mem_size, batch_size, eps_min=0.01, eps_dec=5e-7,
+                 mem_size, batch_size, eps_min=0.01, eps_dec=5e-7   ,
                  lambda_penalty=0.1, alpha_throughput=0.1,replace=1000, 
                  algo=None, env_name=None, chkpt_dir='tmp/dqn', TLC_name="gneJ26"):
         self.gamma = gamma
@@ -149,12 +149,18 @@ class DQAgent(object):
         return stat.mean([self.wait_time_N, self.wait_time_E, self.wait_time_W, self.wait_time_S])
 
     def step(self, action, step):
-
+        # print(type(action))
         # 1st APPLY the choosed action
-        if action == "0":
-            traci.trafficlight.setRedYellowGreenState(self.TLC_name, "GGGgrrrrGGGgrrrr")
-        elif action == "1":
-            traci.trafficlight.setRedYellowGreenState(self.TLC_name, "rrrrGGGgrrrrGGGg")
+        if action == 0:
+            traci.trafficlight.setProgram(self.TLC_name, "wave_N")
+            # traci.trafficlight.setRedYellowGreenState(self.TLC_name, "GGGgrrrrGGGgrrrr")
+        elif action == 1:
+            traci.trafficlight.setProgram(self.TLC_name, "wave_E")
+        elif action == 2:
+            # print("sono qui")
+            traci.trafficlight.setProgram(self.TLC_name, "0")
+            # traci.trafficlight.setRedYellowGreenState(self.TLC_name, "rrrrGGGgrrrrGGGg")
+
 
         # 2nd, find the Reward 
         #func will be implemented later
@@ -219,16 +225,45 @@ class DQAgent(object):
         return np.array(state_space)
 
     def choose_action(self, observation):
+       
         if np.random.random() > self.epsilon:
-            state = T.tensor(observation,dtype=T.float).to(self.q_eval.device)
-            actions = self.q_eval.forward(state)
-            action = T.argmax(actions).item()
+            if self.no_veh_E > 0 and all([self.no_veh_N == 0, self.no_veh_S == 0]):
+                action = 1  # Verde per Sud
+            elif self.no_veh_W > 0 and all([self.no_veh_N == 0, self.no_veh_S == 0]):
+                action = 1  # Verde per Sud
+            elif self.no_veh_N > 0 and all([self.no_veh_E == 0, self.no_veh_W == 0]):
+                # print(self.no_veh_N," ",self.TLC_name)
+                action = 0  # Verde per Nord
+            else:
+                state = T.tensor(observation,dtype=T.float).to(self.q_eval.device)
+                actions = self.q_eval.forward(state)
+                action = T.argmax(actions).item()
         else:
-            action = np.random.choice(self.action_space)
+                action = np.random.choice(self.action_space)
+                
 
         self.reset_lane_traffic_info_params()
 
         return action
+    # def choose_action(self, observation):
+    #     # if self.no_veh_S > 0 and (self.no_veh_S > 0.5 * (self.no_veh_N + self.no_veh_E + self.no_veh_W)):
+    #     #     action = 3
+    #     # elif self.no_veh_N > 0 and (self.no_veh_N > 0.5 * (self.no_veh_S + self.no_veh_E + self.no_veh_W)):
+    #     #     action = 4
+    #     # elif self.no_veh_W > 0 and (self.no_veh_W > 0.5 * (self.no_veh_S + self.no_veh_E + self.no_veh_N)):
+    #     #     action = 5
+    #     # elif 
+         
+    #     if np.random.random() > self.epsilon:
+    #             state = T.tensor(observation,dtype=T.float).to(self.q_eval.device)
+    #             actions = self.q_eval.forward(state)
+    #             action = T.argmax(actions).item()
+    #     else:
+    #             action = np.random.choice(self.action_space)
+
+    #     self.reset_lane_traffic_info_params()
+
+    #     return action
 
     def reset_lane_traffic_info_params(self):
         # Accumulated traffic queues in each direction

@@ -70,10 +70,10 @@ if __name__ == '__main__':
         
 
     for sem in semaphores:
-        agents[sem] = DQAgent(gamma=0.99, epsilon=1, lr=0.0001,
-                          input_dims=8, n_actions=2, mem_size=50000,
-                          batch_size=32, replace=1000, eps_dec=1e-5,
-                          chkpt_dir=f'src/models/{grid}', algo='DQNAgent',
+        agents[sem] = DQAgent(gamma=0.99, epsilon=0.1, lr=0.0001,
+                          input_dims=8, n_actions=3, mem_size=50000,
+                          batch_size=32, replace=1000, eps_dec=1e-4,
+                          chkpt_dir=f'src/models/{grid}', algo='random',
                           env_name=f'SUMO_tlc_{grid}', TLC_name=sem)
 
     if load_checkpoint:
@@ -86,6 +86,7 @@ if __name__ == '__main__':
         observations[sem] = obs
     # observation, reward, info = agent.step(0, step) #taking random action
     
+    
 
     for i in range(n_games):
         # print(i)
@@ -96,54 +97,55 @@ if __name__ == '__main__':
         total_throughput = 0
         queue_lengths = []
         for sem, agent in agents.items():
-            neighbors = {}
-            received_message = False
-            # Get neighbor queues
-            neighbor_queues = [agents[neighbor].get_queue_length() for neighbor in get_neighbors(sem,grid)]
-            # Update with new neigh info
-            agent.update_with_neighbor_info(neighbor_queues)
-            for neighbor in get_neighbors(sem,grid):
-                queue_length = agents[neighbor].get_queue_length()
-                neighbors[neighbor] = queue_length 
-                if queue_length > 0:
-                    received_message = True
-
-            score = 0
-            action = agent.choose_action(observations[sem])
-            observation_, reward, info = agent.step(action, step)
-            score += reward
-
-            # Metrics purposes 
-            # print(info["avg_wait_time"])
-            total_wait_time += info["avg_wait_time"]
-            total_queue_length += info["queue_length"]
-            total_throughput += info["throughput"]
-
-            if not load_checkpoint:
-                agent.store_transition(observations[sem], action, reward, observation_)
-                agent.learn()
-
-            observations[sem] = observation_
-            
-            n_steps += 1
-            total_score += score # accumulate multi-tl scores
-            
-            total_episode_reward += reward
-            
-            avg_score = np.mean(scores[sem][-100:]) #if sem in scores else 0
-
-            ## DEBUG
-            
-            # agent.print_neighbor_info(neighbors)
-            
-
-            if avg_score > best_score:
+                neighbors = {}
+                received_message = False
+                # Get neighbor queues
+                neighbor_queues = [agents[neighbor].get_queue_length() for neighbor in get_neighbors(sem,grid)]
+                # Update with new neigh info
+                agent.update_with_neighbor_info(neighbor_queues)
+                for neighbor in get_neighbors(sem,grid):
+                    queue_length = agents[neighbor].get_queue_length()
+                    neighbors[neighbor] = queue_length 
+                    if queue_length > 0:
+                        received_message = True
+    
+                score = 0
+                action = agent.choose_action(observations[sem])
+                # print(traci.trafficlight.getProgram(sem))
+                observation_, reward, info = agent.step(action, step)
+                score += reward
+    
+                # Metrics purposes 
+                # print(info["avg_wait_time"])
+                total_wait_time += info["avg_wait_time"]
+                total_queue_length += info["queue_length"]
+                total_throughput += info["throughput"]
+    
                 if not load_checkpoint:
-                    agent.save_models()
-                best_score = avg_score
-            
-            scores[sem].append(score)
-            steps_array.append(n_steps)
+                    agent.store_transition(observations[sem], action, reward, observation_)
+                    agent.learn()
+    
+                observations[sem] = observation_
+                
+                n_steps += 1
+                total_score += score # accumulate multi-tl scores
+                
+                total_episode_reward += reward
+                
+                avg_score = np.mean(scores[sem][-100:]) #if sem in scores else 0
+    
+                ## DEBUG
+                
+                # agent.print_neighbor_info(neighbors)
+                
+    
+                if avg_score > best_score:
+                    if not load_checkpoint:
+                        agent.save_models()
+                    best_score = avg_score
+                
+                scores[sem].append(score)
+                steps_array.append(n_steps)
         
 
         avg_wait_time = total_wait_time / len(semaphores) if len(semaphores) > 0 else 0
@@ -174,4 +176,4 @@ if __name__ == '__main__':
     env.close_sumo() 
 
     # (Un)comment to plot
-    plot_imgs(n_games,y,steps_array,eps_history,avg_wait_times_history,avg_rewards_history,throughput_history) 
+    # plot_imgs(n_games,y,steps_array,eps_history,avg_wait_times_history,avg_rewards_history,throughput_history) 

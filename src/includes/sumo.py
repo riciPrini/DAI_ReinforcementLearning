@@ -26,10 +26,11 @@ class SimEnv():
         else:
             sumoBinary = checkBinary('sumo-gui')
         if compare:
-             self.sumoCmd = ([sumoBinary, "-c", f"src/includes/sumo/2x2_compare/main.sumocfg",
+
+             self.sumoCmd = ([sumoBinary, "--no-warnings","-c", f"src/includes/sumo/{self.args.type}/main.sumocfg",
                              "--tripinfo-output", "tripinfo.xml", "-S"])
         else:
-            self.sumoCmd = ([sumoBinary, "-c", f"src/includes/sumo/{self.args.env}/main.sumocfg",
+            self.sumoCmd = ([sumoBinary, "--no-warnings", "-c", f"src/includes/sumo/{self.args.env}/main.sumocfg",
                              "--tripinfo-output", "tripinfo.xml", "-S"])
 
 

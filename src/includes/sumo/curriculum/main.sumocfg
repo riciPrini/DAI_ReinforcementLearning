@@ -3,7 +3,7 @@
  xsi:noNamespaceSchemaLocation="http://sumo.sf.net/xsd/sumoConfiguration.xsd">
     <input>
         <net-file value="network.net.xml"/>
-        <route-files value="random.rou.xml"/>
+        <route-files value="curriculum.rou.xml"/>
 <!--                   <additional-files value="demo.add.xml"/>
    -->
     </input>
