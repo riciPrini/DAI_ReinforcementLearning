@@ -30,8 +30,8 @@ The reward function at time step $t$ is computed as:
 $$r_t = \Delta W_t - \lambda Q_t + \alpha throughput_t$$
 Where: 
 - $\Delta W_t$​: The reduction in average wait time ($W_{t−1}−W_t$​).
-- $\lambda Q_t$ : A penalty term proportional to the total queue length at time $, with scaling factor $.
-$\alpha throughput_t$: A reward term proportional to the throughput of outbound vehicles, with weighting factor $\alpha$.
+- $\lambda Q_t$ : A penalty term proportional to the total queue length at time $t$, with scaling factor $\lambda$.
+- $\alpha throughput_t$: A reward term proportional to the throughput of outbound vehicles, with weighting factor $\alpha$.
 
 This reward function is designed to balance efficiency (reducing wait times and increasing throughput) while penalizing high queue lengths.
 
