@@ -12,7 +12,7 @@ This project implements a traffic light control simulation using SUMO (Simulatio
 ## Project Structure
 
 ### Envirorment
-![](./img/env.png)
+<img src="./img/env.png" alt="Environment" width="300px">
 ### Training
 The core concept is illustrated in the figure below:
 ![](./img/DQL.png)
