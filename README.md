@@ -8,61 +8,41 @@ This project implements a traffic light control simulation using SUMO (Simulatio
 - Python 3.x
 - SUMO (Simulation of Urban MObility)
 
-## Installation
-
-1. Clone the repository
-2. Install the required dependencies:
-```bash
-pip install -r requirements.txt
-```
-3. Make sure SUMO is properly installed and configured in your system
-
-## Usage
-
-The simulation can be run using the following command structure:
-
-```bash
-python src/main.py --env <environment_name> [--nogui] [--steps <number_of_steps>]
-```
-
-### Command Line Arguments
-
-- `--env` (required): Specifies the simulation environment
-  - Example environments: "2x2", "3x3"
-  - Must correspond to a configuration file in `includes/sumo/<env_name>/main.sumocfg`
-
-- `--nogui` (optional): Launches SUMO without GUI
-  - Default: True (runs in GUI mode)
-  - No value needed, just add the flag to disable GUI
-
-- `--steps` (optional): Number of simulation steps to run
-  - Default: 5000
-  - Must be a positive integer
-
-### Examples
-
-1. Basic run with 2x2 environment:
-```bash
-python src/main.py --env 2x2
-```
-2. Basic run with 3x3 environment:
-```bash
-python src/main.py --env 3x3
-```
 
 ## Project Structure
 
+### Envirorment
+
+### Training
+The core concept is illustrated in the figure below:
+
+We are in a collaborative scenario where each agent observes the environment and makes decisions based on the following:
+- Average Wait Time
+- Queue length
+- Outbound vehicle throughput
+
+Based on its own observations, as well as those shared by other agents, each agent can take one of the following actions:
+- Traffic based action 
+- $Q$-Network-based action
+- Random exploration ($\epsilon$-greedy) 
+
+The reward function at time step $t$ is computed as:
+$$r_t = \Delta W_t - \lambda Q_t + \alpha throughput_t$$
+Where: 
+- $\Delta W_t$​: The reduction in average wait time ($W_{t−1}−W_t$​).
+- $\lambda Q_t$ : A penalty term proportional to the total queue length at time $, with scaling factor $.
+$\alpha throughput_t$: A reward term proportional to the throughput of outbound vehicles, with weighting factor $\alpha$.
+
+This reward function is designed to balance efficiency (reducing wait times and increasing throughput) while penalizing high queue lengths.
 
 
+## Usage
 
-## Troubleshooting
-
-If you encounter the error "argument --nogui: expected one argument", make sure you're using the correct command syntax. The --nogui flag doesn't require a value, just include it to disable the GUI.
-
-## Contributing
-
-[Add your contribution guidelines here]
-
-## License
-
-[Add your license information here]
+Training:
+```bash
+python src/main.py --env 2x2 [--nogui] [--steps <number_of_steps>]
+```
+Inference:
+```bash
+python src/compare.py --type [random,curriculum,wave] [--norl] [--nogui] [--plot]
+```
