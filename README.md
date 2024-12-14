@@ -12,9 +12,10 @@ This project implements a traffic light control simulation using SUMO (Simulatio
 ## Project Structure
 
 ### Envirorment
-
+![](./img/env.png)
 ### Training
 The core concept is illustrated in the figure below:
+![](./img/DQL.png)
 
 We are in a collaborative scenario where each agent observes the environment and makes decisions based on the following:
 - Average Wait Time
