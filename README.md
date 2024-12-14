@@ -27,9 +27,9 @@ Based on its own observations, as well as those shared by other agents, each age
 - Random exploration ($\epsilon$-greedy) 
 
 The reward function at time step $t$ is computed as:
-\[
-r_t = \Delta W_t - \lambda Q_t + \alpha \cdot throughput_t
-\]
+$$Er_t = \Delta W_t - \lambda Q_t + \alpha \cdot throughput_t$$
+
+
 Where: 
 - $\Delta W_t$​: The reduction in average wait time ($W_{t−1}−W_t$​).
 - $\lambda \cdot Q_t$ : A penalty term proportional to the total queue length at time $t$, with scaling factor $\lambda$.
