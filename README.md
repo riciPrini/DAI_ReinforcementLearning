@@ -2,6 +2,10 @@
 
 
 This project implements a traffic light control simulation using SUMO (Simulation of Urban MObility) with a Reinforcment Learning approach in **M**ulti**A**gent **S**ystem.
+<br>
+
+<div style="text-align: center;"><img src="./img/wave_training.gif" alt="Environment" width="400px"></div>
+
 
 ## Prerequisites
 
